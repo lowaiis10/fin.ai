@@ -4,72 +4,59 @@
 {% block content %}
 <div class="w-full h-full grid grid-cols-3 grid-rows-2 gap-4 p-4">
 
-  <!-- Card 1: Top Coins Allocation (Donut) -->
-  <div class="bg-yellow-200 rounded-lg shadow p-4 relative">
-    <h3 class="text-sm font-semibold text-gray-700 mb-2">Top Coins Allocation</h3>
-    <div class="relative w-full h-[150px]">
+  <!-- Card 1: Total Crypto Assets -->
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between animate__animated animate__fadeIn">
+    <h3 class="text-sm font-semibold text-gray-600 mb-1">Total Crypto Assets</h3>
+    <div class="flex items-baseline">
+      <span class="text-3xl font-bold text-gray-900 mr-2">$48,200</span>
+      <span class="text-sm text-green-700 font-semibold">+3.1%</span>
+    </div>
+    <p class="text-xs text-gray-500 mt-1">vs. previous month</p>
+  </div>
+
+  <!-- Card 2: Top Coins Breakdown (Donut Chart) -->
+  <div class="bg-white rounded-lg shadow p-4 relative animate__animated animate__fadeInLeft">
+    <h3 class="text-sm font-semibold text-gray-600 mb-2">Top Coins Breakdown</h3>
+    <div class="relative w-full max-w-3xl h-64">
       <canvas id="top-coins-donut" class="absolute top-0 left-0 w-full h-full"></canvas>
     </div>
-    <p class="text-xs text-gray-600 mt-2">ETH, BTC, SOL, DOT, Others</p>
+    <p class="text-xs text-gray-500 mt-2">ETH, BTC, SOL, Others</p>
   </div>
 
-  <!-- Card 2: Performance vs. Benchmark (Line Chart) -->
-  <div class="bg-green-200 rounded-lg shadow p-4">
-    <h3 class="text-sm font-semibold text-gray-700 mb-2">Performance vs. Benchmark</h3>
-    <div class="relative w-full h-[150px]">
-      <canvas id="performance-line" class="absolute top-0 left-0 w-full h-full"></canvas>
+  <!-- Card 3: Historical Crypto Performance (Line Chart) -->
+  <div class="bg-white rounded-lg shadow p-4 relative animate__animated animate__fadeInRight">
+    <h3 class="text-sm font-semibold text-gray-600 mb-2">Historical Performance</h3>
+    <div class="relative w-full max-w-3xl h-64">
+      <canvas id="crypto-performance-line" class="absolute top-0 left-0 w-full h-full"></canvas>
     </div>
-    <p class="text-xs text-gray-600 mt-2">Benchmark: BTC or Crypto Index</p>
+    <p class="text-xs text-gray-500 mt-2">Performance over the last 6 months</p>
   </div>
 
-  <!-- Card 3: Monthly Gains (Bar Chart) -->
-  <div class="bg-blue-200 rounded-lg shadow p-4">
-    <h3 class="text-sm font-semibold text-gray-700 mb-2">Monthly Gains</h3>
-    <div class="relative w-full h-[150px]">
-      <canvas id="monthly-bar" class="absolute top-0 left-0 w-full h-full"></canvas>
+  <!-- Card 4: Volatility Metrics -->
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between animate__animated animate__zoomIn">
+    <h3 class="text-sm font-semibold text-gray-600 mb-2">Volatility</h3>
+    <div class="flex items-baseline">
+      <span class="text-3xl font-bold text-gray-900 mr-2">14.2%</span>
+      <span class="text-sm text-gray-600">30d avg</span>
     </div>
-    <p class="text-xs text-gray-600 mt-2">Jan–Nov 2023 Gains in USD</p>
+    <p class="text-xs text-gray-500 mt-1">Standard deviation</p>
   </div>
 
-  <!-- Card 4: Volatility & Sharpe Ratio -->
-  <div class="bg-pink-200 rounded-lg shadow p-4 flex flex-col justify-between">
-    <div>
-      <h3 class="text-sm font-semibold text-gray-700 mb-2">Volatility & Sharpe</h3>
-      <div class="flex items-baseline space-x-4">
-        <div>
-          <p class="text-xs text-gray-600">30d Volatility</p>
-          <span class="text-2xl font-bold text-gray-900">12.5%</span>
-        </div>
-        <div>
-          <p class="text-xs text-gray-600">Sharpe Ratio</p>
-          <span class="text-2xl font-bold text-gray-900">1.45</span>
-        </div>
-      </div>
-    </div>
-    <p class="text-xs text-gray-600 mt-2">Calculated over the last 90 days</p>
+  <!-- Card 5: Asset Distribution -->
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col animate__animated animate__fadeInUp">
+    <h3 class="text-sm font-semibold text-gray-600 mb-2">Asset Distribution</h3>
+    <ul class="text-gray-700 text-sm">
+      <li>Stablecoins: 20%</li>
+      <li>Altcoins: 80%</li>
+    </ul>
+    <p class="text-xs text-gray-500 mt-1">Based on market cap</p>
   </div>
 
-  <!-- Card 5: Stable vs. Alt Coins -->
-  <div class="bg-purple-200 rounded-lg shadow p-4 flex flex-col justify-between">
-    <div>
-      <h3 class="text-sm font-semibold text-gray-700 mb-2">Stable vs. Alt</h3>
-      <p class="text-lg text-gray-900">Stable: 15% | Alt: 85%</p>
-    </div>
-    <p class="text-xs text-gray-600 mt-2">High risk / high reward ratio</p>
-  </div>
-
-  <!-- Card 6: DeFi vs. L1 vs. L2 -->
-  <div class="bg-red-200 rounded-lg shadow p-4 flex flex-col justify-between">
-    <div>
-      <h3 class="text-sm font-semibold text-gray-700 mb-2">DeFi vs. L1 vs. L2</h3>
-      <ul class="text-sm text-gray-800 space-y-1">
-        <li>DeFi: 25%</li>
-        <li>Layer-1: 50%</li>
-        <li>Layer-2: 10%</li>
-        <li>Others: 15%</li>
-      </ul>
-    </div>
-    <p class="text-xs text-gray-600 mt-2">Category breakdown</p>
+  <!-- Card 6: Liquidity & Lockups -->
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col animate__animated animate__lightSpeedInLeft">
+    <h3 class="text-sm font-semibold text-gray-600 mb-2">Liquidity & Lockups</h3>
+    <p class="text-sm font-bold text-gray-900">$12,000 locked</p>
+    <p class="text-xs text-gray-500 mt-1">Staking, yield farms, etc.</p>
   </div>
 
 </div>
@@ -78,80 +65,39 @@
 {% block extra_scripts %}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // Donut Chart
-  const donutEl = document.getElementById("top-coins-donut");
-  if (donutEl) {
-    new Chart(donutEl.getContext("2d"), {
+  // Donut Chart for Top Coins Breakdown
+  const topCoinsEl = document.getElementById("top-coins-donut");
+  if (topCoinsEl) {
+    new Chart(topCoinsEl.getContext("2d"), {
       type: "doughnut",
       data: {
-        labels: ["ETH", "BTC", "SOL", "DOT", "Others"],
+        labels: ["ETH", "BTC", "SOL", "Others"],
         datasets: [{
-          data: [30, 40, 10, 10, 10],
-          backgroundColor: ["#A78BFA", "#FBBF24", "#F472B6", "#34D399", "#60A5FA"]
+          data: [35, 40, 15, 10],
+          backgroundColor: ["#A78BFA", "#FBBF24", "#F472B6", "#60A5FA"]
         }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false
-      }
+      options: { responsive: true, maintainAspectRatio: false }
     });
   }
 
-  // Line Chart
-  const lineEl = document.getElementById("performance-line");
-  if (lineEl) {
-    new Chart(lineEl.getContext("2d"), {
+  // Line Chart for Historical Performance
+  const cryptoPerfEl = document.getElementById("crypto-performance-line");
+  if (cryptoPerfEl) {
+    new Chart(cryptoPerfEl.getContext("2d"), {
       type: "line",
       data: {
-        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-        datasets: [
-          {
-            label: "Portfolio",
-            data: [50000, 52000, 51500, 54000],
-            borderColor: "#4F46E5",
-            backgroundColor: "rgba(79,70,229,0.1)",
-            fill: true,
-            tension: 0.3
-          },
-          {
-            label: "Benchmark (BTC)",
-            data: [49000, 51000, 50000, 53000],
-            borderColor: "#F59E0B",
-            backgroundColor: "rgba(245,158,11,0.1)",
-            fill: true,
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false
-      }
-    });
-  }
-
-  // Monthly Gains (Bar Chart)
-  const barEl = document.getElementById("monthly-bar");
-  if (barEl) {
-    new Chart(barEl.getContext("2d"), {
-      type: "bar",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
+        labels: ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
         datasets: [{
-          label: "Gains (USD)",
-          data: [800, 1200, 900, 1500, 1400, 1800, 1600, 2000, 2100, 1900, 2200],
-          backgroundColor: "#34D399",
-          borderRadius: 4
+          label: "Portfolio Value",
+          data: [45000, 46000, 47000, 48000, 49000, 50000],
+          borderColor: "#3B82F6",
+          backgroundColor: "rgba(59,130,246,0.2)",
+          fill: true,
+          tension: 0.3
         }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: { display: true },
-          y: { display: true }
-        }
-      }
+      options: { responsive: true, maintainAspectRatio: false }
     });
   }
 });

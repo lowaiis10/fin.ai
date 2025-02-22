@@ -1,25 +1,32 @@
 {% extends "wallets/base_home.html" %}
-{% block title %}fin.ai - Home{% endblock %}
+{% block title %}fin.ai - Your Ultimate Crypto Advisor{% endblock %}
 {% block content %}
-<div class="flex flex-col items-center justify-center bg-gradient-to-br from-secondary to-accent min-h-screen px-4">
-  <div class="text-center p-8">
-    <h1 class="text-5xl font-extrabold text-white mb-4">fin.ai</h1>
-    <p class="mt-4 text-2xl text-white">Your ultimate crypto portfolio advisor.</p>
+<div class="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 flex flex-col justify-center items-center px-4">
+  <!-- Hero Section -->
+  <div class="text-center">
+    <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-wide animate__animated animate__fadeInDown">
+      Welcome to fin.ai
+    </h1>
+    <p class="mt-6 text-xl md:text-2xl text-white animate__animated animate__fadeInUp">
+      Unlock the full potential of your crypto portfolio with real-time insights and personalized advice.
+    </p>
   </div>
-  <div class="mt-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-    <button id="connect-metamask" class="w-full sm:w-auto bg-white hover:bg-gray-200 text-primary font-semibold px-8 py-4 rounded shadow-lg">
+
+  <!-- Call-to-Action Buttons -->
+  <div class="mt-12 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8 animate__animated animate__fadeInUp">
+    <button id="connect-metamask" class="w-full sm:w-auto bg-white hover:bg-gray-200 text-primary font-bold text-lg px-8 py-4 rounded-full shadow-xl transition duration-300 transform hover:scale-105">
       Connect MetaMask
     </button>
-    <button id="connect-phantom" class="w-full sm:w-auto bg-white hover:bg-gray-200 text-primary font-semibold px-8 py-4 rounded shadow-lg">
+    <button id="connect-phantom" class="w-full sm:w-auto bg-white hover:bg-gray-200 text-primary font-bold text-lg px-8 py-4 rounded-full shadow-xl transition duration-300 transform hover:scale-105">
       Connect Phantom
     </button>
   </div>
-  <div class="mt-6 text-center">
-    <p id="wallet-status" class="text-lg text-white"></p>
-    <ul id="wallet-list" class="mt-2 list-disc list-inside text-white"></ul>
-    <button id="disconnect-wallet" class="mt-4 bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded shadow-lg hidden">
-      Disconnect Wallet
-    </button>
+
+  <!-- Social Proof / Additional Messaging -->
+  <div class="mt-10">
+    <p class="text-white text-sm md:text-base">
+      Join thousands of crypto enthusiasts enjoying superior portfolio management. It's free, secure, and fun!
+    </p>
   </div>
 </div>
 {% endblock %}
