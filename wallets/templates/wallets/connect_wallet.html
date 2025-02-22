@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect Wallet</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+        async function connectMetamask() {
+            if (window.ethereum) {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                saveWallet(accounts[0], "metamask");
+            } else {
+                alert("Metamask not detected!");
+            }
+        }
+
+        async function connectPhantom() {
+            if (window.solana && window.solana.isPhantom) {
+                const response = await window.solana.connect();
+                saveWallet(response.publicKey.toString(), "phantom");
+            } else {
+                alert("Phantom Wallet not detected!");
+            }
+        }
+
+        function saveWallet(address, walletType) {
+            fetch("/wallets/save-wallet/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `address=${address}&wallet_type=${walletType}`
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => alert("Error connecting wallet"));
+        }
+    function saveWallet(address, walletType) {
+        fetch("/wallets/save-wallet/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `address=${encodeURIComponent(address)}&wallet_type=${encodeURIComponent(walletType)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("✅ Wallet Connected: " + address);
+            } else {
+                alert("❌ Error: " + data.error);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Fetch Error:", error);
+            alert("❌ Network Error: Could not connect wallet");
+        });
+    }
+
+    </script>
+</head>
+<body>
+    <h1>Connect Your Wallet</h1>
+    <button onclick="connectMetamask()">Connect Metamask</button>
+    <button onclick="connectPhantom()">Connect Phantom</button>
+</body>
+</html>

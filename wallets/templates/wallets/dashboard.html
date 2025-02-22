@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/dashboard.js" defer></script>
+    <script src="{% static 'dashboard.js' %}" defer></script>
+<body>
+    <div class="container">
+        <div class="dashboard-card">
+            <h1>📊 Portfolio Dashboard</h1>
+            <p>Track your crypto holdings in real-time.</p>
+            
+            <h2>Total Portfolio Value:</h2>
+            <h3 id="portfolio-value">$0.00</h3>
+
+            <h2>Connected Wallets:</h2>
+            <div id="wallet-list"></div>
+
+            <h2>NFT Collection:</h2>
+            <div id="nft-gallery"></div>
+
+            <canvas id="portfolio-chart"></canvas>
+
+            <button id="disconnect-wallet" class="btn disconnect">Disconnect Wallet</button>
+        </div>
+    </div>
+</body>
+</html>
