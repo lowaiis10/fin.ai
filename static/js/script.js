@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let connectedWallets = JSON.parse(localStorage.getItem("wallets")) || [];
   updateWalletList();
 
-  // Connect MetaMask (Ethereum)
   connectMetamaskBtn.addEventListener("click", async () => {
     if (window.ethereum) {
       try {
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Connect Phantom (Solana)
   connectPhantomBtn.addEventListener("click", async () => {
     if (window.solana && window.solana.isPhantom) {
       try {
@@ -40,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addWallet(walletType, address) {
     if (!connectedWallets.some(w => w.address === address)) {
-      // Save to Django
       fetch("/wallets/save-wallet/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -53,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("wallets", JSON.stringify(connectedWallets));
           walletStatus.textContent = `✅ Wallet Connected: ${address}`;
           updateWalletList();
-          window.location.href = "/dashboard/"; // optional redirect
+          // Optionally redirect to dashboard
+          window.location.href = "/dashboard/";
         } else {
           walletStatus.textContent = `❌ ${data.message}`;
         }
@@ -84,8 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     walletList.innerHTML = "";
     walletStatus.textContent = "";
     disconnectBtn.style.display = "none";
-
-    // Clear Django session
     window.location.href = "/wallets/disconnect/";
   });
 });

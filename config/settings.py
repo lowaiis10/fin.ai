@@ -1,13 +1,15 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+load_dotenv()
 
-load_dotenv()  # Only if you actually use a .env file
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback-key")
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "YOUR-SECRET-KEY")  # Change in production
-DEBUG = True  # For local dev; or read from env if you prefer
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "YOUR-SECRET-KEY")
+DEBUG = True  # or read from .env if you want
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -16,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  # Required for static files
+    'django.contrib.staticfiles',
     'corsheaders',
     'wallets',
 ]
@@ -37,8 +39,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],         # No global 'templates' folder
-        'APP_DIRS': True,   # Searches within wallets/templates/
+        'DIRS': [],  # no global templates folder
+        'APP_DIRS': True,  # crucial for app-based templates
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -61,24 +63,15 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 STATIC_URL = '/static/'
-# Points to the top-level 'static' folder next to manage.py
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'static'  # top-level static folder
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

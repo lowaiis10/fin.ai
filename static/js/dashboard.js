@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     for (let wallet of wallets) {
       const response = await fetch(`/wallets/fetch_nfts?wallet=${wallet.address}`);
       const data = await response.json();
-
       if (data.nfts) {
         data.nfts.forEach(nft => {
           const nftItem = document.createElement("div");

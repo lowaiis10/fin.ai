@@ -37,15 +37,16 @@ def save_wallet(request):
             wallet_type = request.POST.get("wallet_type")
 
         if not address or not wallet_type:
-            return JsonResponse({"success": False, "error": "Invalid data received"}, status=400)
+            return JsonResponse({"success": False, "error": "Invalid data"}, status=400)
 
         if "wallets" not in request.session:
             request.session["wallets"] = []
 
-        # Check for duplicates
+        # no duplicates
         if not any(w["address"] == address for w in request.session["wallets"]):
             request.session["wallets"].append({"address": address, "wallet_type": wallet_type})
             request.session.modified = True
+
             wallet, created = Wallet.objects.get_or_create(address=address, wallet_type=wallet_type)
             return JsonResponse({"success": True, "message": "Wallet connected", "new": created})
         else:
