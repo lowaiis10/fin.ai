@@ -1,3 +1,4 @@
+# wallets/views.py
 import os
 import json
 import requests
@@ -6,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Wallet
 
+# Endpoint constants remain the same
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3/simple/price"
 RESERVOIR_API_URL = "https://api.reservoir.tools/tokens/v6"
 RESERVOIR_API_KEY = os.getenv("RESERVOIR_API_KEY", "YOUR-RESERVOIR-API-KEY")
@@ -15,27 +17,30 @@ HEADERS = {
     "x-api-key": RESERVOIR_API_KEY
 }
 
-from django.shortcuts import render, redirect
-# Other imports remain unchanged…
-
-from django.shortcuts import render, redirect
-# Other imports remain unchanged…
-
 def homepage(request):
+    # Landing page with no sidebar
     return render(request, "wallets/homepage.html")
 
 def overview(request):
-    # This now serves as your main “dashboard” style page
+    # Main “dashboard” or overview page
     return render(request, "wallets/overview.html")
+
+def crypto_allocation(request):
+    return render(request, "wallets/crypto_allocation.html")
+
+def nft(request):
+    return render(request, "wallets/nft.html")
 
 def disconnect_wallet(request):
     request.session.flush()
     return redirect("homepage")
 
-# Keep other endpoints: save_wallet, fetch_prices, fetch_nfts, etc.
 
 
-# Existing endpoints like save_wallet, fetch_prices, fetch_nfts remain here.
+
+    
+
+##################################################################################
 
 
 @csrf_exempt

@@ -2,24 +2,92 @@
 {% block title %}fin.ai - Crypto Allocation{% endblock %}
 {% block header %}Crypto Allocation{% endblock %}
 {% block content %}
-<div class="bg-white rounded-lg shadow p-6">
-  <h2 class="text-2xl font-bold mb-4">Crypto Allocation</h2>
-  <div class="relative w-full max-w-3xl h-64">
-    <canvas id="crypto-allocation-chart" class="absolute top-0 left-0 w-full h-full"></canvas>
+<div class="w-full h-full grid grid-cols-3 grid-rows-2 gap-4 p-4">
+
+  <!-- Card 1: Top Coins Allocation (Donut) -->
+  <div class="bg-yellow-200 rounded-lg shadow p-4 relative">
+    <h3 class="text-sm font-semibold text-gray-700 mb-2">Top Coins Allocation</h3>
+    <div class="relative w-full h-[150px]">
+      <canvas id="top-coins-donut" class="absolute top-0 left-0 w-full h-full"></canvas>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">ETH, BTC, SOL, DOT, Others</p>
   </div>
+
+  <!-- Card 2: Performance vs. Benchmark (Line Chart) -->
+  <div class="bg-green-200 rounded-lg shadow p-4">
+    <h3 class="text-sm font-semibold text-gray-700 mb-2">Performance vs. Benchmark</h3>
+    <div class="relative w-full h-[150px]">
+      <canvas id="performance-line" class="absolute top-0 left-0 w-full h-full"></canvas>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">Benchmark: BTC or Crypto Index</p>
+  </div>
+
+  <!-- Card 3: Monthly Gains (Bar Chart) -->
+  <div class="bg-blue-200 rounded-lg shadow p-4">
+    <h3 class="text-sm font-semibold text-gray-700 mb-2">Monthly Gains</h3>
+    <div class="relative w-full h-[150px]">
+      <canvas id="monthly-bar" class="absolute top-0 left-0 w-full h-full"></canvas>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">Jan–Nov 2023 Gains in USD</p>
+  </div>
+
+  <!-- Card 4: Volatility & Sharpe Ratio -->
+  <div class="bg-pink-200 rounded-lg shadow p-4 flex flex-col justify-between">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">Volatility & Sharpe</h3>
+      <div class="flex items-baseline space-x-4">
+        <div>
+          <p class="text-xs text-gray-600">30d Volatility</p>
+          <span class="text-2xl font-bold text-gray-900">12.5%</span>
+        </div>
+        <div>
+          <p class="text-xs text-gray-600">Sharpe Ratio</p>
+          <span class="text-2xl font-bold text-gray-900">1.45</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">Calculated over the last 90 days</p>
+  </div>
+
+  <!-- Card 5: Stable vs. Alt Coins -->
+  <div class="bg-purple-200 rounded-lg shadow p-4 flex flex-col justify-between">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">Stable vs. Alt</h3>
+      <p class="text-lg text-gray-900">Stable: 15% | Alt: 85%</p>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">High risk / high reward ratio</p>
+  </div>
+
+  <!-- Card 6: DeFi vs. L1 vs. L2 -->
+  <div class="bg-red-200 rounded-lg shadow p-4 flex flex-col justify-between">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">DeFi vs. L1 vs. L2</h3>
+      <ul class="text-sm text-gray-800 space-y-1">
+        <li>DeFi: 25%</li>
+        <li>Layer-1: 50%</li>
+        <li>Layer-2: 10%</li>
+        <li>Others: 15%</li>
+      </ul>
+    </div>
+    <p class="text-xs text-gray-600 mt-2">Category breakdown</p>
+  </div>
+
 </div>
 {% endblock %}
+
 {% block extra_scripts %}
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById("crypto-allocation-chart").getContext("2d");
-    new Chart(ctx, {
-      type: "pie",
+document.addEventListener("DOMContentLoaded", () => {
+  // Donut Chart
+  const donutEl = document.getElementById("top-coins-donut");
+  if (donutEl) {
+    new Chart(donutEl.getContext("2d"), {
+      type: "doughnut",
       data: {
-        labels: ["ETH", "BTC", "USDT", "Others"],
+        labels: ["ETH", "BTC", "SOL", "DOT", "Others"],
         datasets: [{
-          data: [20, 50, 10, 20],
-          backgroundColor: ["#34D399", "#60A5FA", "#FBBF24", "#F472B6"]
+          data: [30, 40, 10, 10, 10],
+          backgroundColor: ["#A78BFA", "#FBBF24", "#F472B6", "#34D399", "#60A5FA"]
         }]
       },
       options: {
@@ -27,6 +95,65 @@
         maintainAspectRatio: false
       }
     });
-  });
+  }
+
+  // Line Chart
+  const lineEl = document.getElementById("performance-line");
+  if (lineEl) {
+    new Chart(lineEl.getContext("2d"), {
+      type: "line",
+      data: {
+        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        datasets: [
+          {
+            label: "Portfolio",
+            data: [50000, 52000, 51500, 54000],
+            borderColor: "#4F46E5",
+            backgroundColor: "rgba(79,70,229,0.1)",
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: "Benchmark (BTC)",
+            data: [49000, 51000, 50000, 53000],
+            borderColor: "#F59E0B",
+            backgroundColor: "rgba(245,158,11,0.1)",
+            fill: true,
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  }
+
+  // Monthly Gains (Bar Chart)
+  const barEl = document.getElementById("monthly-bar");
+  if (barEl) {
+    new Chart(barEl.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
+        datasets: [{
+          label: "Gains (USD)",
+          data: [800, 1200, 900, 1500, 1400, 1800, 1600, 2000, 2100, 1900, 2200],
+          backgroundColor: "#34D399",
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { display: true },
+          y: { display: true }
+        }
+      }
+    });
+  }
+});
 </script>
 {% endblock %}

@@ -1,3 +1,5 @@
+// static/js/script.js
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Global script.js loaded.");
 
@@ -12,9 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const walletList = document.getElementById("wallet-list");
   const disconnectBtn = document.getElementById("disconnect-wallet");
 
+  // Update UI with existing wallets on load
   updateWalletList();
 
-  // Connect MetaMask
+  // MetaMask Connection
   if (connectMetamaskBtn) {
     connectMetamaskBtn.addEventListener("click", async () => {
       console.log("MetaMask button clicked.");
@@ -30,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("wallets", JSON.stringify(connectedWallets));
           if (walletStatus) walletStatus.textContent = `Connected MetaMask: ${accounts[0]}`;
           updateWalletList();
-          window.location.href = "/dashboard/";
+          // Redirect to /overview
+          window.location.href = "/overview/";
         }
       } catch (error) {
         console.error("MetaMask connection failed:", error);
@@ -39,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Connect Phantom
+  // Phantom Connection
   if (connectPhantomBtn) {
     connectPhantomBtn.addEventListener("click", async () => {
       console.log("Phantom button clicked.");
@@ -55,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("wallets", JSON.stringify(connectedWallets));
         if (walletStatus) walletStatus.textContent = `Connected Phantom: ${address}`;
         updateWalletList();
-        window.location.href = "/dashboard/";
+        // Redirect to /overview
+        window.location.href = "/overview/";
       } catch (error) {
         console.error("Phantom connection failed:", error);
         if (walletStatus) walletStatus.textContent = "❌ Phantom Connection Failed";
@@ -63,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Disconnect logic
+  // Disconnect Logic
   if (disconnectBtn) {
     disconnectBtn.addEventListener("click", () => {
       console.log("Disconnecting wallets...");
@@ -71,10 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
       connectedWallets = [];
       if (walletStatus) walletStatus.textContent = "";
       updateWalletList();
+      // Redirect to homepage
       window.location.href = "/";
     });
   }
 
+  // Helper function to update wallet list in the UI
   function updateWalletList() {
     if (!walletList) return;
     walletList.innerHTML = "";
@@ -83,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       li.textContent = `✅ ${wallet.walletType}: ${wallet.address}`;
       walletList.appendChild(li);
     });
+    // Show/hide the disconnect button
     if (disconnectBtn) {
       if (connectedWallets.length > 0) {
         disconnectBtn.classList.remove("hidden");

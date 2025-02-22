@@ -1,16 +1,11 @@
 {% extends "wallets/base_home.html" %}
-{% block title %}fin.ai - Your Ultimate Crypto Advisor{% endblock %}
+{% block title %}fin.ai - Home{% endblock %}
 {% block content %}
 <div class="flex flex-col items-center justify-center bg-gradient-to-br from-secondary to-accent min-h-screen px-4">
-  <!-- Hero Section -->
   <div class="text-center p-8">
-    <h1 class="text-5xl font-extrabold text-white mb-4">Supercharge Your Crypto Portfolio</h1>
-    <p class="mt-4 text-xl text-white max-w-2xl mx-auto">
-      Gain real-time insights, AI-driven financial advice, and seamless wallet integration—all in one place.
-    </p>
+    <h1 class="text-5xl font-extrabold text-white mb-4">fin.ai</h1>
+    <p class="mt-4 text-2xl text-white">Your ultimate crypto portfolio advisor.</p>
   </div>
-
-  <!-- Call to Action: Connect Wallets -->
   <div class="mt-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
     <button id="connect-metamask" class="w-full sm:w-auto bg-white hover:bg-gray-200 text-primary font-semibold px-8 py-4 rounded shadow-lg">
       Connect MetaMask
@@ -19,8 +14,6 @@
       Connect Phantom
     </button>
   </div>
-
-  <!-- Status + Connected Wallets (if needed) -->
   <div class="mt-6 text-center">
     <p id="wallet-status" class="text-lg text-white"></p>
     <ul id="wallet-list" class="mt-2 list-disc list-inside text-white"></ul>
@@ -29,35 +22,4 @@
     </button>
   </div>
 </div>
-
-<!-- Features Section -->
-<div class="bg-white py-16">
-  <div class="max-w-5xl mx-auto px-4 text-center">
-    <h2 class="text-4xl font-bold text-primary mb-8">Why Choose fin.ai?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Key Point 1 -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition">
-        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Real-Time Insights</h3>
-        <p class="text-gray-600">
-          Monitor your portfolio with live analytics, performance charts, and risk metrics.
-        </p>
-      </div>
-      <!-- Key Point 2 -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition">
-        <h3 class="text-2xl font-semibold text-gray-800 mb-2">AI-Driven Advice</h3>
-        <p class="text-gray-600">
-          Receive personalized recommendations to optimize asset allocation and maximize returns.
-        </p>
-      </div>
-      <!-- Key Point 3 -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition">
-        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Seamless Wallet Integration</h3>
-        <p class="text-gray-600">
-          Connect your wallet with one click and start analyzing instantly—no hassle.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% endblock %}
