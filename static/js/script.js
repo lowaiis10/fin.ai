@@ -1,106 +1,96 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const connectMetamaskBtn = document.getElementById("connect-metamask");
-    const connectPhantomBtn = document.getElementById("connect-phantom");
-    const disconnectBtn = document.getElementById("disconnect-wallet");
-    const walletStatus = document.getElementById("wallet-status");
-    const walletList = document.getElementById("wallet-list");
+  const connectMetamaskBtn = document.getElementById("connect-metamask");
+  const connectPhantomBtn = document.getElementById("connect-phantom");
+  const disconnectBtn = document.getElementById("disconnect-wallet");
+  const walletStatus = document.getElementById("wallet-status");
+  const walletList = document.getElementById("wallet-list");
 
-    let connectedWallets = [];
+  // Load existing wallets from localStorage
+  let connectedWallets = JSON.parse(localStorage.getItem("wallets")) || [];
+  updateWalletList();
 
-    // Connect MetaMask (Ethereum)
-    connectMetamaskBtn.addEventListener("click", async () => {
-        if (window.ethereum) {
-            try {
-                const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                accounts.forEach(address => addWallet("Ethereum", address));
-            } catch (error) {
-                walletStatus.innerHTML = "❌ MetaMask Connection Failed";
-            }
-        } else {
-            walletStatus.innerHTML = "❌ Please install MetaMask";
+  // Connect MetaMask (Ethereum)
+  connectMetamaskBtn.addEventListener("click", async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        if (accounts.length > 0) {
+          addWallet("metamask", accounts[0]);
         }
-    });
-
-    // Connect Phantom (Solana)
-    connectPhantomBtn.addEventListener("click", async () => {
-        if (window.solana && window.solana.isPhantom) {
-            try {
-                const response = await window.solana.connect();
-                addWallet("Solana", response.publicKey.toString());
-            } catch (error) {
-                walletStatus.innerHTML = "❌ Phantom Connection Failed";
-            }
-        } else {
-            walletStatus.innerHTML = "❌ Please install Phantom Wallet";
-        }
-    });
-
-    // Add wallet to the list
-    function addWallet(network, address) {
-        if (!connectedWallets.some(wallet => wallet.address === address)) {
-            connectedWallets.push({ network, address });
-            updateWalletList();
-        }
+      } catch (error) {
+        walletStatus.textContent = "❌ MetaMask Connection Failed";
+      }
+    } else {
+      walletStatus.textContent = "❌ Please install MetaMask";
     }
+  });
 
-    // Update UI with connected wallets
-    function updateWalletList() {
-        walletList.innerHTML = "";
-        connectedWallets.forEach(wallet => {
-            const li = document.createElement("li");
-            li.textContent = `✅ ${wallet.network}: ${wallet.address}`;
-            walletList.appendChild(li);
-        });
-        disconnectBtn.style.display = connectedWallets.length > 0 ? "block" : "none";
+  // Connect Phantom (Solana)
+  connectPhantomBtn.addEventListener("click", async () => {
+    if (window.solana && window.solana.isPhantom) {
+      try {
+        const response = await window.solana.connect();
+        addWallet("phantom", response.publicKey.toString());
+      } catch (error) {
+        walletStatus.textContent = "❌ Phantom Connection Failed";
+      }
+    } else {
+      walletStatus.textContent = "❌ Please install Phantom Wallet";
     }
+  });
 
-    // Disconnect Wallets
-    disconnectBtn.addEventListener("click", () => {
-        connectedWallets = [];
-        walletList.innerHTML = "";
-        walletStatus.innerHTML = "";
-        disconnectBtn.style.display = "none";
-        if (window.ethereum) {
-            window.ethereum.request({ method: "eth_requestAccounts", params: [] });
-        }
-        if (window.solana) {
-            window.solana.disconnect();
-        }
-    });
-});
-document.addEventListener("DOMContentLoaded", () => {
-    const connectMetamaskBtn = document.getElementById("connect-metamask");
-    const connectPhantomBtn = document.getElementById("connect-phantom");
-
-    let connectedWallets = [];
-
-    // Connect MetaMask (Ethereum)
-    connectMetamaskBtn.addEventListener("click", async () => {
-        if (window.ethereum) {
-            try {
-                const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                localStorage.setItem("wallets", JSON.stringify([{ network: "Ethereum", address: accounts[0] }]));
-                window.location.href = "/dashboard/";  // ✅ Redirect to dashboard
-            } catch (error) {
-                alert("❌ MetaMask Connection Failed");
-            }
+  function addWallet(walletType, address) {
+    // Check if already in local list
+    if (!connectedWallets.some(w => w.address === address)) {
+      // Save to Django
+      fetch("/wallets/save-wallet/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address, wallet_type: walletType })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          connectedWallets.push({ walletType, address });
+          localStorage.setItem("wallets", JSON.stringify(connectedWallets));
+          walletStatus.textContent = `✅ Wallet Connected: ${address}`;
+          updateWalletList();
+          // Redirect to dashboard
+          window.location.href = "/dashboard/";
         } else {
-            alert("❌ Please install MetaMask");
+          walletStatus.textContent = `❌ Error: ${data.error || 'Unknown'}`;
         }
-    });
+      })
+      .catch(err => {
+        walletStatus.textContent = "❌ Network Error";
+        console.error(err);
+      });
+    } else {
+      // Already connected
+      walletStatus.textContent = `✅ Wallet Already Connected: ${address}`;
+      // Optionally redirect anyway
+      window.location.href = "/dashboard/";
+    }
+  }
 
-    // Connect Phantom (Solana)
-    connectPhantomBtn.addEventListener("click", async () => {
-        if (window.solana && window.solana.isPhantom) {
-            try {
-                const response = await window.solana.connect();
-                localStorage.setItem("wallets", JSON.stringify([{ network: "Solana", address: response.publicKey.toString() }]));
-                window.location.href = "/dashboard/";  // ✅ Redirect to dashboard
-            } catch (error) {
-                alert("❌ Phantom Connection Failed");
-            }
-        } else {
-            alert("❌ Please install Phantom Wallet");
-        }
+  function updateWalletList() {
+    walletList.innerHTML = "";
+    connectedWallets.forEach(wallet => {
+      const li = document.createElement("li");
+      li.textContent = `✅ ${wallet.walletType}: ${wallet.address}`;
+      walletList.appendChild(li);
     });
+    disconnectBtn.style.display = connectedWallets.length > 0 ? "block" : "none";
+  }
+
+  disconnectBtn.addEventListener("click", () => {
+    connectedWallets = [];
+    localStorage.removeItem("wallets");
+    walletList.innerHTML = "";
+    walletStatus.textContent = "";
+    disconnectBtn.style.display = "none";
+
+    // Clear session on Django side
+    window.location.href = "/wallets/disconnect/";
+  });
 });

@@ -1,30 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Portfolio Tracker</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <script defer src="/static/js/script.js"></script>
-</head>
-<body>
-    <div class="container">
-        <h1>Crypto Portfolio Tracker</h1>
-        <p>Manage your crypto assets securely and efficiently.</p>
-
-        <div class="wallet-buttons">
-            <button id="connect-metamask" class="btn">Connect MetaMask</button>
-            <button id="connect-phantom" class="btn">Connect Phantom</button>
-        </div>
-
-        <p id="wallet-status"></p>
-
-        <div id="connected-wallets">
-            <h3>Connected Wallets:</h3>
-            <ul id="wallet-list"></ul>
-        </div>
-
-        <button id="disconnect-wallet" class="btn disconnect" style="display: none;">Disconnect Wallets</button>
-    </div>
-</body>
-</html>
+{% extends 'wallets/base.html' %}
+{% block title %}fin.ai - Home{% endblock %}
+{% block content %}
+<div class="text-center space-y-6 animate__animated animate__fadeIn">
+  <h1 class="text-3xl font-bold">Welcome to fin.ai</h1>
+  <p class="text-lg">Your ultra-modern crypto portfolio analyzer.</p>
+  <a href="{% url 'connect_wallet' %}"
+     class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded font-semibold">
+    Connect Your Wallet
+  </a>
+</div>
+{% endblock %}

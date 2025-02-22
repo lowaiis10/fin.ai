@@ -1,32 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/static/dashboard.js" defer></script>
-    <script src="{% static 'dashboard.js' %}" defer></script>
-<body>
-    <div class="container">
-        <div class="dashboard-card">
-            <h1>📊 Portfolio Dashboard</h1>
-            <p>Track your crypto holdings in real-time.</p>
-            
-            <h2>Total Portfolio Value:</h2>
-            <h3 id="portfolio-value">$0.00</h3>
+{% extends 'wallets/base.html' %}
+{% block title %}Portfolio Dashboard{% endblock %}
+{% block content %}
+<div class="w-full max-w-2xl animate__animated animate__fadeInUp">
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
+    <h1 class="text-2xl font-bold">📊 Portfolio Dashboard</h1>
+    <p>Track your crypto holdings in real-time.</p>
 
-            <h2>Connected Wallets:</h2>
-            <div id="wallet-list"></div>
+    <h2 class="text-xl font-semibold">Total Portfolio Value:</h2>
+    <h3 id="portfolio-value" class="text-2xl font-bold">$0.00</h3>
 
-            <h2>NFT Collection:</h2>
-            <div id="nft-gallery"></div>
+    <h2 class="text-xl font-semibold">Connected Wallets:</h2>
+    <div id="wallet-list" class="space-y-2"></div>
 
-            <canvas id="portfolio-chart"></canvas>
+    <h2 class="text-xl font-semibold">NFT Collection:</h2>
+    <div id="nft-gallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
 
-            <button id="disconnect-wallet" class="btn disconnect">Disconnect Wallet</button>
-        </div>
-    </div>
-</body>
-</html>
+    <canvas id="portfolio-chart" class="mt-6"></canvas>
+
+    <button id="disconnect-wallet"
+            class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded w-full">
+      Disconnect Wallet
+    </button>
+  </div>
+</div>
+
+<script src="{% static 'js/dashboard.js' %}" defer></script>
+{% endblock %}

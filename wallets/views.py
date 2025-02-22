@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 from django.views.decorators.csrf import csrf_exempt
@@ -5,16 +6,16 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Wallet
 
-# 🔹 API Keys (Move to env variables if needed for security)
+# External API URLs and keys
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3/simple/price"
 RESERVOIR_API_URL = "https://api.reservoir.tools/tokens/v6"
+RESERVOIR_API_KEY = os.getenv("RESERVOIR_API_KEY", "YOUR-RESERVOIR-API-KEY")
 
 HEADERS = {
     "accept": "application/json",
-    "x-api-key": "c5bb7226-fcf4-5aee-947c-f2e2fc4c7755"  # Reservoir API Key
+    "x-api-key": RESERVOIR_API_KEY
 }
 
-# 🔹 Pages
 def homepage(request):
     return render(request, "wallets/homepage.html")
 
@@ -22,17 +23,16 @@ def dashboard(request):
     return render(request, "wallets/dashboard.html")
 
 def disconnect_wallet(request):
-    """ Clears wallet session and redirects to homepage """
-    request.session.flush()  # Clears all session data
+    """Clear session data and redirect to homepage."""
+    request.session.flush()
     return redirect("homepage")
 
-# ✅ Save Wallet Function
 @csrf_exempt
 def save_wallet(request):
-    """ Saves a connected wallet to session and database """
+    """Saves a connected wallet to session and database."""
     if request.method == "POST":
         try:
-            data = json.loads(request.body)  # ✅ Support JSON payloads
+            data = json.loads(request.body)
             address = data.get("address")
             wallet_type = data.get("wallet_type")
         except json.JSONDecodeError:
@@ -42,44 +42,44 @@ def save_wallet(request):
         if not address or not wallet_type:
             return JsonResponse({"success": False, "error": "Invalid data received"}, status=400)
 
-        # ✅ Store wallet in session
+        # Initialize session list if necessary
         if "wallets" not in request.session:
             request.session["wallets"] = []
-        request.session["wallets"].append({"address": address, "wallet_type": wallet_type})
-        request.session.modified = True  # Save session
 
-        # ✅ Store wallet in DB
-        wallet, created = Wallet.objects.get_or_create(address=address, wallet_type=wallet_type)
-        return JsonResponse({"success": True, "message": "Wallet connected", "new": created})
+        # Prevent duplicates
+        if not any(w["address"] == address for w in request.session["wallets"]):
+            request.session["wallets"].append({"address": address, "wallet_type": wallet_type})
+            request.session.modified = True
+
+            # Save to database
+            wallet, created = Wallet.objects.get_or_create(address=address, wallet_type=wallet_type)
+            return JsonResponse({"success": True, "message": "Wallet connected", "new": created})
+        else:
+            return JsonResponse({"success": True, "message": "Wallet already connected", "new": False})
 
     return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
 def connect_wallet(request):
     return render(request, "wallets/connect_wallet.html")
 
-
-# ✅ Fetch Wallet Balances (Dummy Function - Replace with Web3 API)
+# Dummy function to simulate fetching wallet balances
 def get_wallet_balances(wallet_address):
-    """ Fetches dummy wallet balances - replace with real blockchain query """
     return {
-        "ethereum": 1.2,  # ETH
-        "solana": 3.5,  # SOL
-        "usdt": 500,  # USDT
+        "ethereum": 1.2,  # Example: 1.2 ETH
+        "solana": 3.5,    # Example: 3.5 SOL
+        "usdt": 500,      # Example: 500 USDT
     }
 
-# ✅ Fetch Live Token Prices from CoinGecko
 @csrf_exempt
 def fetch_prices(request):
     wallet_address = request.GET.get("wallet")
     if not wallet_address:
         return JsonResponse({"error": "Wallet address required"}, status=400)
 
-    balances = get_wallet_balances(wallet_address)  # Fetch wallet balances
-
-    # Fetch prices from CoinGecko
-    token_ids = ",".join(balances.keys()).lower()
+    balances = get_wallet_balances(wallet_address)
+    token_ids = ",".join(balances.keys()).lower()  # e.g., "ethereum,solana,usdt"
     response = requests.get(f"{COINGECKO_API_URL}?ids={token_ids}&vs_currencies=usd")
-    
+
     try:
         price_data = response.json()
     except:
@@ -99,20 +99,17 @@ def fetch_prices(request):
 
     return JsonResponse({"portfolio_value": portfolio_value, "tokens": token_values})
 
-
-# ✅ Fetch NFT Holdings & Floor Prices from Reservoir API
 @csrf_exempt
 def fetch_nfts(request):
     wallet_address = request.GET.get("wallet")
     if not wallet_address:
         return JsonResponse({"error": "Wallet address required"}, status=400)
 
-    response = requests.get(
-        f"{RESERVOIR_API_URL}?owner={wallet_address}&limit=10",
-        headers=HEADERS
-    )
-
     try:
+        response = requests.get(
+            f"{RESERVOIR_API_URL}?owner={wallet_address}&limit=10",
+            headers=HEADERS
+        )
         nft_data = response.json().get("tokens", [])
     except:
         return JsonResponse({"error": "Failed to fetch NFT data"}, status=500)

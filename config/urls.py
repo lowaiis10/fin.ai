@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from wallets.views import homepage, dashboard  # Ensure dashboard is imported
+from wallets.views import homepage, dashboard
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", homepage, name="homepage"),
-    path("wallets/", include("wallets.urls")),
-    path("dashboard/", dashboard, name="dashboard"),  # Add this for direct access
+    path('admin/', admin.site.urls),
+    path('', homepage, name='homepage'),
+    path('wallets/', include('wallets.urls')),
+    path('dashboard/', dashboard, name='dashboard'),
 ]

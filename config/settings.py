@@ -1,19 +1,15 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-# ✅ Define the Base Directory
+load_dotenv()  # Loads environment variables from a .env file, if present
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ✅ Keep Secret Key Secure in Production
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-secret-key")  # Use env var for production security
-
-# ✅ Debug Mode (Disable in Production)
-DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"  # Set "False" in production
-
-# ✅ Allowed Hosts
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "YOUR-SECRET-KEY")  # Replace in production
+DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
-# ✅ Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,31 +17,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
-    'wallets',  # ✅ Your app
+    'corsheaders',
+    'wallets',
 ]
 
-# ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Ensure CORS middleware is high
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
-# ✅ URL Configuration
 ROOT_URLCONF = 'config.urls'
 
-# ✅ Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ✅ Uses Pathlib for cleaner code
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'],  # Use a global templates folder if desired
+        'APP_DIRS': True,  # Automatically search app templates directories
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -57,10 +50,9 @@ TEMPLATES = [
     },
 ]
 
-# ✅ WSGI Application
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
-# ✅ Database (Uses SQLite by default, but configurable)
 DATABASES = {
     'default': {
         'ENGINE': os.getenv("DJANGO_DB_ENGINE", "django.db.backends.sqlite3"),
@@ -68,25 +60,30 @@ DATABASES = {
     }
 }
 
-# ✅ Password Validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
-# ✅ Static Files (CSS, JS, Images)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# Static and Media
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ✅ Media Files (User Uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# ✅ Default Auto Field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True  # Allow frontend access (change this in production)
+
+# CORS configuration
+CORS_ALLOW_ALL_ORIGINS = True  # For development only; restrict in production
