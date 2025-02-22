@@ -5,14 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const disconnectBtn = document.getElementById("disconnect-wallet");
   const chartCanvas = document.getElementById("portfolio-chart");
 
-  // Retrieve wallets from localStorage
   let wallets = JSON.parse(localStorage.getItem("wallets")) || [];
-
-  // If no wallets, optionally redirect back to connect page
-  if (!wallets.length) {
-    // window.location.href = "/wallets/connect-wallet/";
-    // or just show a message
-  }
 
   async function fetchPortfolio() {
     let totalValue = 0;
@@ -31,7 +24,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
       }
 
-      // Display connected wallet info
       const walletItem = document.createElement("div");
       walletItem.textContent = `${wallet.walletType}: ${wallet.address}`;
       walletListElem.appendChild(walletItem);
@@ -84,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         },
         plugins: {
           legend: {
-            labels: { color: '#fff' }
+            labels: { color: '#ffffff' }
           }
         }
       }
@@ -96,7 +88,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.location.href = "/wallets/disconnect/";
   });
 
-  // Fetch portfolio & NFTs on page load
   fetchPortfolio();
   fetchNFTs();
 });

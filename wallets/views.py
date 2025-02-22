@@ -6,7 +6,6 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Wallet
 
-# External API URLs and keys
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3/simple/price"
 RESERVOIR_API_URL = "https://api.reservoir.tools/tokens/v6"
 RESERVOIR_API_KEY = os.getenv("RESERVOIR_API_KEY", "YOUR-RESERVOIR-API-KEY")
@@ -23,13 +22,11 @@ def dashboard(request):
     return render(request, "wallets/dashboard.html")
 
 def disconnect_wallet(request):
-    """Clear session data and redirect to homepage."""
     request.session.flush()
     return redirect("homepage")
 
 @csrf_exempt
 def save_wallet(request):
-    """Saves a connected wallet to session and database."""
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -42,16 +39,13 @@ def save_wallet(request):
         if not address or not wallet_type:
             return JsonResponse({"success": False, "error": "Invalid data received"}, status=400)
 
-        # Initialize session list if necessary
         if "wallets" not in request.session:
             request.session["wallets"] = []
 
-        # Prevent duplicates
+        # Check for duplicates
         if not any(w["address"] == address for w in request.session["wallets"]):
             request.session["wallets"].append({"address": address, "wallet_type": wallet_type})
             request.session.modified = True
-
-            # Save to database
             wallet, created = Wallet.objects.get_or_create(address=address, wallet_type=wallet_type)
             return JsonResponse({"success": True, "message": "Wallet connected", "new": created})
         else:
@@ -62,12 +56,12 @@ def save_wallet(request):
 def connect_wallet(request):
     return render(request, "wallets/connect_wallet.html")
 
-# Dummy function to simulate fetching wallet balances
+# Dummy function
 def get_wallet_balances(wallet_address):
     return {
-        "ethereum": 1.2,  # Example: 1.2 ETH
-        "solana": 3.5,    # Example: 3.5 SOL
-        "usdt": 500,      # Example: 500 USDT
+        "ethereum": 1.2,
+        "solana": 3.5,
+        "usdt": 500,
     }
 
 @csrf_exempt
@@ -77,7 +71,7 @@ def fetch_prices(request):
         return JsonResponse({"error": "Wallet address required"}, status=400)
 
     balances = get_wallet_balances(wallet_address)
-    token_ids = ",".join(balances.keys()).lower()  # e.g., "ethereum,solana,usdt"
+    token_ids = ",".join(balances.keys()).lower()
     response = requests.get(f"{COINGECKO_API_URL}?ids={token_ids}&vs_currencies=usd")
 
     try:
@@ -87,7 +81,6 @@ def fetch_prices(request):
 
     portfolio_value = 0
     token_values = {}
-
     for token, balance in balances.items():
         token_price = price_data.get(token.lower(), {}).get("usd", 0)
         token_values[token] = {

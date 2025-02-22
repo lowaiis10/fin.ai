@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const walletStatus = document.getElementById("wallet-status");
   const walletList = document.getElementById("wallet-list");
 
-  // Load existing wallets from localStorage
   let connectedWallets = JSON.parse(localStorage.getItem("wallets")) || [];
   updateWalletList();
 
@@ -40,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function addWallet(walletType, address) {
-    // Check if already in local list
     if (!connectedWallets.some(w => w.address === address)) {
       // Save to Django
       fetch("/wallets/save-wallet/", {
@@ -55,10 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("wallets", JSON.stringify(connectedWallets));
           walletStatus.textContent = `✅ Wallet Connected: ${address}`;
           updateWalletList();
-          // Redirect to dashboard
-          window.location.href = "/dashboard/";
+          window.location.href = "/dashboard/"; // optional redirect
         } else {
-          walletStatus.textContent = `❌ Error: ${data.error || 'Unknown'}`;
+          walletStatus.textContent = `❌ ${data.message}`;
         }
       })
       .catch(err => {
@@ -66,9 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error(err);
       });
     } else {
-      // Already connected
       walletStatus.textContent = `✅ Wallet Already Connected: ${address}`;
-      // Optionally redirect anyway
       window.location.href = "/dashboard/";
     }
   }
@@ -90,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     walletStatus.textContent = "";
     disconnectBtn.style.display = "none";
 
-    // Clear session on Django side
+    // Clear Django session
     window.location.href = "/wallets/disconnect/";
   });
 });
