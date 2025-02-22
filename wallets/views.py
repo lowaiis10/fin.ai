@@ -15,15 +15,28 @@ HEADERS = {
     "x-api-key": RESERVOIR_API_KEY
 }
 
+from django.shortcuts import render, redirect
+# Other imports remain unchanged…
+
+from django.shortcuts import render, redirect
+# Other imports remain unchanged…
+
 def homepage(request):
     return render(request, "wallets/homepage.html")
 
-def dashboard(request):
-    return render(request, "wallets/dashboard.html")
+def overview(request):
+    # This now serves as your main “dashboard” style page
+    return render(request, "wallets/overview.html")
 
 def disconnect_wallet(request):
     request.session.flush()
     return redirect("homepage")
+
+# Keep other endpoints: save_wallet, fetch_prices, fetch_nfts, etc.
+
+
+# Existing endpoints like save_wallet, fetch_prices, fetch_nfts remain here.
+
 
 @csrf_exempt
 def save_wallet(request):
@@ -99,3 +112,4 @@ def fetch_nfts(request):
             "floor_price": nft_info.get("market", {}).get("floorAsk", {}).get("price", {}).get("amount", {}).get("usd", 0)
         })
     return JsonResponse({"nfts": nft_list})
+

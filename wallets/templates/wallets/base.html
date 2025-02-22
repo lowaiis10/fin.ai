@@ -2,19 +2,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}fin.ai{% endblock %}</title>
-    <!-- Load Tailwind CSS from CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Animate.css for transitions -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <!-- Chart.js for dashboard charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <title>{% block title %}fin.ai{% endblock %}</title>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS from CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'sans-serif'] },
+          colors: { primary: '#4F46E5', secondary: '#10B981', accent: '#F59E0B' }
+        }
+      }
+    }
+  </script>
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
-    <div class="min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-900 font-sans h-screen overflow-hidden">
+  <div class="h-full flex">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-primary text-white p-6">
+      <div class="text-2xl font-bold mb-8">fin.ai</div>
+      <nav class="space-y-4">
+        <a href="{% url 'overview' %}" class="block px-4 py-2 rounded hover:bg-primary/90">Overview</a>
+        <a href="{% url 'crypto_allocation' %}" class="block px-4 py-2 rounded hover:bg-primary/90">Crypto Allocation</a>
+        <a href="{% url 'nft' %}" class="block px-4 py-2 rounded hover:bg-primary/90">NFT Portfolio</a>
+      </nav>
+    </aside>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-y-auto">
+      <!-- Header -->
+      <header class="bg-white shadow p-4 flex items-center justify-between">
+        <h1 class="text-2xl font-semibold">{% block header %}Dashboard{% endblock %}</h1>
+        <a href="{% url 'homepage' %}" class="text-secondary font-semibold hover:underline">Home</a>
+      </header>
+      <!-- Page Content -->
+      <main class="p-6 flex-1 overflow-y-auto">
         {% block content %}{% endblock %}
+      </main>
     </div>
-    {% block extra_scripts %}{% endblock %}
+  </div>
+  {% block extra_scripts %}{% endblock %}
+  <script src="{% static 'js/script.js' %}" defer></script>
 </body>
 </html>

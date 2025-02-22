@@ -1,0 +1,32 @@
+{% extends "wallets/base.html" %}
+{% block title %}fin.ai - Crypto Allocation{% endblock %}
+{% block header %}Crypto Allocation{% endblock %}
+{% block content %}
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-2xl font-bold mb-4">Crypto Allocation</h2>
+  <div class="relative w-full max-w-3xl h-64">
+    <canvas id="crypto-allocation-chart" class="absolute top-0 left-0 w-full h-full"></canvas>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const ctx = document.getElementById("crypto-allocation-chart").getContext("2d");
+    new Chart(ctx, {
+      type: "pie",
+      data: {
+        labels: ["ETH", "BTC", "USDT", "Others"],
+        datasets: [{
+          data: [20, 50, 10, 20],
+          backgroundColor: ["#34D399", "#60A5FA", "#FBBF24", "#F472B6"]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  });
+</script>
+{% endblock %}

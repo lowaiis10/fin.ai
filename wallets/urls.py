@@ -1,5 +1,8 @@
 from django.urls import path
-from .views import homepage, dashboard, disconnect_wallet, fetch_prices, fetch_nfts, save_wallet
+from .views import (
+    homepage, overview, disconnect_wallet, 
+    fetch_prices, fetch_nfts, save_wallet
+)
 
 urlpatterns = [
     path('disconnect/', disconnect_wallet, name='disconnect_wallet'),

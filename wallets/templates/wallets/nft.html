@@ -1,0 +1,28 @@
+{% extends "wallets/base.html" %}
+{% block title %}fin.ai - NFT Portfolio{% endblock %}
+{% block header %}NFT Portfolio{% endblock %}
+{% block content %}
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-2xl font-bold mb-4">NFT Portfolio</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- Dummy NFT Card 1 -->
+    <div class="bg-gray-100 p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300" alt="NFT Alpha" class="w-full rounded">
+      <h3 class="mt-2 text-xl font-semibold text-gray-900">NFT Alpha</h3>
+      <p class="text-gray-700">Estimated Value: $1,000</p>
+    </div>
+    <!-- Dummy NFT Card 2 -->
+    <div class="bg-gray-100 p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300" alt="NFT Beta" class="w-full rounded">
+      <h3 class="mt-2 text-xl font-semibold text-gray-900">NFT Beta</h3>
+      <p class="text-gray-700">Estimated Value: $750</p>
+    </div>
+    <!-- Dummy NFT Card 3 -->
+    <div class="bg-gray-100 p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300" alt="NFT Gamma" class="w-full rounded">
+      <h3 class="mt-2 text-xl font-semibold text-gray-900">NFT Gamma</h3>
+      <p class="text-gray-700">Estimated Value: $500</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
