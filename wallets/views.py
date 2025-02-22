@@ -42,44 +42,28 @@ def save_wallet(request):
         if "wallets" not in request.session:
             request.session["wallets"] = []
 
-        # no duplicates
         if not any(w["address"] == address for w in request.session["wallets"]):
             request.session["wallets"].append({"address": address, "wallet_type": wallet_type})
             request.session.modified = True
-
             wallet, created = Wallet.objects.get_or_create(address=address, wallet_type=wallet_type)
             return JsonResponse({"success": True, "message": "Wallet connected", "new": created})
         else:
             return JsonResponse({"success": True, "message": "Wallet already connected", "new": False})
-
     return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
-
-def connect_wallet(request):
-    return render(request, "wallets/connect_wallet.html")
-
-# Dummy function
-def get_wallet_balances(wallet_address):
-    return {
-        "ethereum": 1.2,
-        "solana": 3.5,
-        "usdt": 500,
-    }
 
 @csrf_exempt
 def fetch_prices(request):
     wallet_address = request.GET.get("wallet")
     if not wallet_address:
         return JsonResponse({"error": "Wallet address required"}, status=400)
-
-    balances = get_wallet_balances(wallet_address)
+    # Dummy balance function
+    balances = {"ethereum": 1.2, "solana": 3.5, "usdt": 500}
     token_ids = ",".join(balances.keys()).lower()
     response = requests.get(f"{COINGECKO_API_URL}?ids={token_ids}&vs_currencies=usd")
-
     try:
         price_data = response.json()
     except:
         return JsonResponse({"error": "Failed to fetch prices"}, status=500)
-
     portfolio_value = 0
     token_values = {}
     for token, balance in balances.items():
@@ -90,7 +74,6 @@ def fetch_prices(request):
             "total_value": balance * token_price,
         }
         portfolio_value += balance * token_price
-
     return JsonResponse({"portfolio_value": portfolio_value, "tokens": token_values})
 
 @csrf_exempt
@@ -98,7 +81,6 @@ def fetch_nfts(request):
     wallet_address = request.GET.get("wallet")
     if not wallet_address:
         return JsonResponse({"error": "Wallet address required"}, status=400)
-
     try:
         response = requests.get(
             f"{RESERVOIR_API_URL}?owner={wallet_address}&limit=10",
@@ -107,7 +89,6 @@ def fetch_nfts(request):
         nft_data = response.json().get("tokens", [])
     except:
         return JsonResponse({"error": "Failed to fetch NFT data"}, status=500)
-
     nft_list = []
     for nft in nft_data:
         nft_info = nft.get("token", {})
@@ -117,5 +98,4 @@ def fetch_nfts(request):
             "collection": nft_info.get("collection", {}).get("name", "Unknown Collection"),
             "floor_price": nft_info.get("market", {}).get("floorAsk", {}).get("price", {}).get("amount", {}).get("usd", 0)
         })
-
     return JsonResponse({"nfts": nft_list})

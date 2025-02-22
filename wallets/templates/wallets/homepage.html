@@ -1,12 +1,25 @@
 {% extends "wallets/base.html" %}
 {% block title %}fin.ai - Home{% endblock %}
 {% block content %}
-<div class="text-center space-y-6 animate__animated animate__fadeIn">
-  <h1 class="text-3xl font-bold">Welcome to fin.ai</h1>
-  <p class="text-lg">Your ultra-modern crypto portfolio analyzer.</p>
-  <a href="{% url 'connect_wallet' %}"
-     class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded font-semibold">
-    Connect Your Wallet
-  </a>
+<div class="flex flex-col items-center justify-center bg-gradient-to-br from-purple-800 to-blue-900 min-h-screen px-4">
+    <div class="text-center p-8">
+        <h1 class="text-6xl font-extrabold mb-4">fin.ai</h1>
+        <p class="mt-4 text-2xl text-gray-300">Your ultimate crypto portfolio analyzer.</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <button id="connect-metamask" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-4 rounded shadow-lg">
+                Connect MetaMask
+            </button>
+            <button id="connect-phantom" class="w-full sm:w-auto mt-4 sm:mt-0 bg-purple-600 hover:bg-purple-500 text-white font-semibold px-8 py-4 rounded shadow-lg">
+                Connect Phantom
+            </button>
+        </div>
+        <p id="wallet-status" class="mt-6 text-lg text-gray-200"></p>
+        <div id="wallet-info" class="mt-4">
+            <ul id="wallet-list" class="mt-2 list-disc list-inside text-gray-300"></ul>
+            <button id="disconnect-wallet" class="mt-4 bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-3 rounded shadow-lg hidden">
+                Disconnect Wallet
+            </button>
+        </div>
+    </div>
 </div>
 {% endblock %}

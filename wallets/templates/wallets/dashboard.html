@@ -1,28 +1,43 @@
 {% extends "wallets/base.html" %}
-{% block title %}Portfolio Dashboard{% endblock %}
+{% block title %}fin.ai - Dashboard{% endblock %}
 {% block content %}
-<div class="w-full max-w-2xl animate__animated animate__fadeInUp">
-  <div class="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
-    <h1 class="text-2xl font-bold">📊 Portfolio Dashboard</h1>
-    <p>Track your crypto holdings in real-time.</p>
-
-    <h2 class="text-xl font-semibold">Total Portfolio Value:</h2>
-    <h3 id="portfolio-value" class="text-2xl font-bold">$0.00</h3>
-
-    <h2 class="text-xl font-semibold">Connected Wallets:</h2>
-    <div id="wallet-list" class="space-y-2"></div>
-
-    <h2 class="text-xl font-semibold">NFT Collection:</h2>
-    <div id="nft-gallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
-
-    <canvas id="portfolio-chart" class="mt-6"></canvas>
-
-    <button id="disconnect-wallet"
-            class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded w-full">
-      Disconnect Wallet
-    </button>
-  </div>
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-800 p-6 flex flex-col">
+        <div class="text-2xl font-bold mb-8 text-white">fin.ai</div>
+        <nav class="flex-1">
+            <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700 text-white">Overview</a>
+            <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700 text-white mt-2">Portfolio</a>
+            <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700 text-white mt-2">NFTs</a>
+        </nav>
+        <button id="disconnect-wallet" class="mt-8 bg-red-600 hover:bg-red-500 text-white font-semibold px-4 py-2 rounded">
+            Disconnect
+        </button>
+    </aside>
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col bg-gray-900">
+        <!-- Header -->
+        <header class="bg-gray-800 p-4">
+            <h1 class="text-2xl font-bold text-white">Dashboard</h1>
+        </header>
+        <!-- Content area -->
+        <main class="p-6 flex-1 overflow-y-auto space-y-8">
+            <!-- Portfolio Overview -->
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 text-white">Portfolio Overview</h2>
+                <canvas id="portfolio-chart" class="w-full h-64"></canvas>
+            </section>
+            <!-- Connected Wallets -->
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 text-white">Connected Wallets</h2>
+                <div id="wallet-list" class="space-y-2 text-white"></div>
+            </section>
+            <!-- NFT Gallery -->
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 text-white">NFT Gallery</h2>
+                <div id="nft-gallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+            </section>
+        </main>
+    </div>
 </div>
-
-<script src="{% static 'js/dashboard.js' %}" defer></script>
 {% endblock %}

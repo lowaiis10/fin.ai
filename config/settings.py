@@ -1,15 +1,13 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback-key")
-
+load_dotenv()  # Load environment variables from .env if available
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "YOUR-SECRET-KEY")
-DEBUG = True  # or read from .env if you want
+DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -39,8 +37,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # no global templates folder
-        'APP_DIRS': True,  # crucial for app-based templates
+        'DIRS': [],  # Using app-based templates only
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -70,11 +68,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'  # top-level static folder
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Top-level static folder
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 CORS_ALLOW_ALL_ORIGINS = True

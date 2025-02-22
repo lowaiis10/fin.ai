@@ -2,6 +2,8 @@
 import os
 import sys
 
+TAILWIND_APP_NAME = 'theme'
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
