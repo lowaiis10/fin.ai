@@ -1,4 +1,3 @@
-# wallets/urls.py
 from django.urls import path
 from .views import (
     homepage,
@@ -12,13 +11,13 @@ from .views import (
 )
 
 urlpatterns = [
-    # Endpoints for wallet functionality
+    # Wallet-related endpoints
     path('disconnect/', disconnect_wallet, name='disconnect_wallet'),
     path('fetch_prices/', fetch_prices, name='fetch_prices'),
     path('fetch_nfts/', fetch_nfts, name='fetch_nfts'),
     path('save-wallet/', save_wallet, name='save_wallet'),
-
-    # If you want to keep separate pages:
+    
+    # Additional pages if you want separate URLs (Overview is already top-level)
     path('crypto-allocation/', crypto_allocation, name='crypto_allocation'),
     path('nft/', nft, name='nft'),
 ]

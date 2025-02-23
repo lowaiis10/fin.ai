@@ -6,165 +6,67 @@
   <title>{% block title %}Finalysis.xyz Dashboard{% endblock %}</title>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS from CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif']
-          },
+          fontFamily: { sans: ['Poppins', 'sans-serif'] },
           colors: {
-            primary: '#93C5FD',   /* Light Blue-300 for Sidebar */
-            secondary: '#6EE7B7', /* Emerald-300 for Buttons/Hovers */
-            accent: '#FCD34D',    /* Amber-300 for Accent Buttons */
-            header: '#E0F2FE',    /* Light Blue-100 for Header */
-            navText: '#1E293B'    /* Slate-800 for Nav Text */
+            primary: '#93C5FD',
+            secondary: '#6EE7B7',
+            accent: '#FCD34D',
+            header: '#E0F2FE',
+            navText: '#1E293B'
           }
         }
       }
     }
   </script>
-  <!-- Animate.css for animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <!-- Chart.js for visualizations -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Optional: Hide scrollbar for a cleaner look */
     ::-webkit-scrollbar { width: 0; }
   </style>
 </head>
 <body class="bg-blue-50 text-navText font-sans h-screen overflow-hidden">
   <div class="h-full flex">
-    <!-- Left Navigation (Sidebar) -->
-    <aside class="w-64 bg-white text-gray-700 flex flex-col p-4">
-      <!-- Top Section: Branding & Notifications -->
-      <div class="flex items-center justify-between mb-6">
-        <!-- Branding / App Name => clickable to Overview -->
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white flex flex-col p-4">
+      <div class="mb-6">
+        <!-- Branding: Clickable to Overview -->
         <a href="{% url 'overview' %}" class="font-bold text-lg text-gray-800 hover:underline">
-          Gentic.xyz
+          Finalysis.xyz
         </a>
-        <!-- Notifications / Snooze Button (Dropdown) -->
-        <div class="relative group">
-          <!-- Bell / Notifications Icon -->
-          <button class="focus:outline-none">
-            <!-- Example icon from Heroicons (Bell icon) -->
-            <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-700 transition"
-                 fill="none" stroke="currentColor" stroke-width="2" 
-                 stroke-linecap="round" stroke-linejoin="round"
-                 viewBox="0 0 24 24">
-              <path d="M15 17h5l-1.405-1.405C18.21 14.79 18 14.42 18 14V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C8.67 6.165 8 7.388 8 8.75V14c0 .42-.21.79-.595 1.185L6 17h9z" />
-              <path d="M13.73 21a2 2 0 01-3.46 0" />
-            </svg>
-          </button>
-          <!-- Dropdown: Snooze / Settings -->
-          <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white rounded shadow-lg border border-gray-200 z-10">
-            <ul class="py-2 text-sm text-gray-600">
-              <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                  Snooze 1 hour
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                  Snooze 4 hours
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                  Snooze 8 hours
-                </a>
-              </li>
-              <li class="border-t border-gray-100 mt-2 pt-2">
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                  Do Not Disturb settings
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                  Notification settings
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
-
-      <!-- Search Bar -->
-      <div class="relative mb-6">
-        <input 
-          type="text"
-          class="w-full bg-gray-100 rounded-md pl-10 pr-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-          placeholder="Search..."
-        />
-        <!-- Search Icon (Heroicons Magnifying Glass) -->
-        <svg class="w-4 h-4 text-gray-500 absolute top-2.5 left-3"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round"
-             viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-      </div>
-
-      <!-- Main Nav Links (Overview, Crypto Allocation, NFT Portfolio) -->
-      <nav class="flex-1 overflow-y-auto">
-        <ul class="space-y-1">
-          <!-- Overview -->
-          <li>
-            <a href="{% url 'overview' %}" 
-               class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
-              <!-- Icon: Chart Bar -->
-              <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2"
-                   fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round"
-                   viewBox="0 0 24 24">
-                <path d="M9 19V6h3v13H9zm4-8h3v8h-3v-8zM5 13h3v5H5v-5zM19 19V4h-3v15h3z" />
-              </svg>
-              <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">Overview</span>
-            </a>
-          </li>
-          <!-- Crypto Allocation -->
-          <li>
-            <a href="{% url 'crypto_allocation' %}" 
-               class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
-              <!-- Icon: Pie Chart -->
-              <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2"
-                   fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round"
-                   viewBox="0 0 24 24">
-                <path d="M20.21 15.89A10.99 10.99 0 0112 22 10.99 10.99 0 011.79 15.89"/>
-                <path d="M2.07 10A10.93 10.93 0 0112 2v10z"/>
-                <path d="M12 2a10.93 10.93 0 0110 8h-10z"/>
-              </svg>
-              <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">Crypto Allocation</span>
-            </a>
-          </li>
-          <!-- NFT Portfolio -->
-          <li>
-            <a href="{% url 'nft' %}" 
-               class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
-              <!-- Icon: Photograph -->
-              <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2"
-                   fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round"
-                   viewBox="0 0 24 24">
-                <path d="M4 4h16v16H4z" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M21 15l-5-5L5 21"/>
-              </svg>
-              <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">NFT Portfolio</span>
-            </a>
-          </li>
-        </ul>
+      <!-- Main Navigation -->
+      <nav class="space-y-6">
+        <a href="{% url 'overview' %}" class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
+          <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M9 19V6h3v13H9zm4-8h3v8h-3v-8zM5 13h3v5H5v-5zM19 19V4h-3v15h3z" />
+          </svg>
+          <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">Overview</span>
+        </a>
+        <a href="{% url 'crypto_allocation' %}" class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
+          <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M20.21 15.89A10.99 10.99 0 0112 22 10.99 10.99 0 011.79 15.89"/>
+            <path d="M2.07 10A10.93 10.93 0 0112 2v10z"/>
+            <path d="M12 2a10.93 10.93 0 0110 8h-10z"/>
+          </svg>
+          <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">Crypto Allocation</span>
+        </a>
+        <a href="{% url 'nft' %}" class="flex items-center px-3 py-2 rounded transition transform hover:scale-105 hover:bg-blue-100 group">
+          <svg class="w-5 h-5 text-gray-500 group-hover:text-gray-700 mr-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M4 4h16v16H4z" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <span class="text-sm text-gray-700 group-hover:text-gray-800 font-medium">NFT Portfolio</span>
+        </a>
       </nav>
-
-      <!-- Optional: Additional Link at Bottom -->
+      <!-- Invite Link -->
       <div class="mt-4">
-        <a href="#" class="inline-block text-blue-600 text-sm font-semibold hover:underline">
-          Invite your team
-        </a>
+        <a href="#" class="inline-block text-blue-600 text-sm font-semibold hover:underline">Invite your team</a>
       </div>
     </aside>
     
@@ -173,30 +75,21 @@
       <!-- Header -->
       <header class="bg-header shadow px-6 py-4 flex items-center justify-between">
         <div class="flex items-center space-x-4">
-          
-          <!-- Social: X -->
-          <a href="https://x.com/gentic_xyz" target="_blank" rel="noopener noreferrer"
-             class="text-gray-600 hover:text-gray-800 transition">
-            <!-- Placeholder "X" Icon -->
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <!-- Social Icons -->
+          <a href="https://x.com/YourProfile" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M4 20L20 4M20 20L4 4" />
             </svg>
           </a>
-          
-          <!-- Social: Discord -->
-          <a href="https://discord.gg/NQJJCK73" target="_blank" rel="noopener noreferrer"
-             class="text-gray-600 hover:text-gray-800 transition">
-            <!-- Placeholder Discord Icon -->
-            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-              <!-- Minimal Discord shape path -->
+          <a href="https://discord.gg/YourServer" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M20.24 4.56C18.2 3.85 16.16 3.38 14.08 3.08c-.1.18-.22.41-.31.59-1.86-.28-3.69-.28-5.55 0-.09-.18-.2-.41-.31-.59-2.08.3-4.12.77-6.16 1.48C1.84 9.41 1.06 14.09 1 18.83c1.92 1.38 4.26 2.27 6.75 2.58.43-.59.82-1.23 1.16-1.91-.64-.19-1.25-.43-1.8-.75v-.03l.08-.05c3.43 1.59 7.18 1.59 10.61 0l.08.05v.03c-.55.32-1.16.56-1.8.75.35.68.73 1.32 1.16 1.91 2.49-.31 4.83-1.2 6.75-2.58-.12-4.72-1-9.39-2.76-14.27zM8.51 15.32c-1 0-1.8-.92-1.8-2.06 0-1.14.8-2.07 1.8-2.07s1.82.93 1.82 2.07c0 1.14-.82 2.06-1.82 2.06zm7.07 0c-1 0-1.82-.92-1.82-2.06 0-1.14.81-2.07 1.82-2.07s1.8.93 1.8 2.07c0 1.14-.8 2.06-1.8 2.06z"/>
             </svg>
           </a>
         </div>
         <div class="flex items-center space-x-4">
-          <
-          <button id="disconnect-wallet" class="bg-accent hover:bg-yellow-400 text-navText font-bold px-10 py-5 rounded0 transition duration-200">
+          <a href="{% url 'homepage' %}" class="text-secondary font-semibold hover:underline">Home</a>
+          <button id="disconnect-wallet" class="bg-accent hover:bg-yellow-400 text-navText font-bold px-4 py-2 rounded transition duration-200">
             Disconnect
           </button>
         </div>

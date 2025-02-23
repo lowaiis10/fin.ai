@@ -3,10 +3,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}fin.ai{% endblock %}</title>
+  <title>{% block title %}Finalysis.xyz - Home{% endblock %}</title>
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS from CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,19 +13,18 @@
         extend: {
           fontFamily: { sans: ['Poppins', 'sans-serif'] },
           colors: {
-            primary: '#4F46E5',
-            secondary: '#10B981',
-            accent: '#F59E0B'
+            primary: '#93C5FD',
+            secondary: '#6EE7B7',
+            accent: '#FCD34D'
           }
         }
       }
     }
   </script>
-  <!-- Animate.css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-blue-50 text-gray-800 font-sans">
   <div class="flex flex-col min-h-screen">
     {% block content %}{% endblock %}
   </div>
