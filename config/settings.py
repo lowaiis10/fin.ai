@@ -6,9 +6,17 @@ load_dotenv()  # Load environment variables from .env if available
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "YOUR-SECRET-KEY")
-DEBUG = False
-ALLOWED_HOSTS = []
+# ✅ Secret Key from Railway Variables
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-default-secret-key")
+
+# ✅ Debug Mode should be False in Production
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+# ✅ Allow all hosts for now (or specify Railway's domain)
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+
+# ✅ Define the Port for Gunicorn (Required for Railway)
+PORT = os.getenv("PORT", "8000")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,14 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'whitenoise.runserver_nostatic',  # 🚀 WhiteNoise for Static Files
     'wallets',
-    'users',  # ✅ Make sure 'users' is here
+    'users',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 ADD THIS
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Use WhiteNoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,7 +48,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Usually empty if using app-based templates
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -53,14 +61,17 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'config.wsgi.application'
-ASGI_APPLICATION = 'config.asgi.application'
 
+# ✅ Switch to Railway PostgreSQL (Recommended)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'railway'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -71,10 +82,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# ✅ Static Files Settings for Railway
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Top-level static folder
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # ✅ Required for Production
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ✅ Allow All CORS Requests (Change for security later)
 CORS_ALLOW_ALL_ORIGINS = True
